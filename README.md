@@ -189,7 +189,7 @@ git config --local user.email "syamjoj@gmail.com"
 ### Pembagian Tugas Tim
 
 #### 🧑‍💻 Anggota 1 — Backend API & Controller
-**Nama:** Hisyam Eka Pramudita
+**Nama:** Hisyam Eka Pramudita (2307016)
 
 **File:**
 - app/Http/Controllers/HomeController.php
@@ -204,7 +204,7 @@ git config --local user.email "syamjoj@gmail.com"
 - Routing utama aplikasi
 
 #### 🧑‍💻 Anggota 2 — Database & CRUD
-**Nama:** Rendi
+**Nama:** Rendi (2307017)
 
 **File:**
 - database/migrations/xxxx_create_favorites_table.php
@@ -217,7 +217,7 @@ git config --local user.email "syamjoj@gmail.com"
 - Validasi input rating dan catatan
 
 #### 🧑‍💻 Anggota 3 — Frontend & Blade
-**Nama:** Wida
+**Nama:** Wida Rahayu (2307028)
 
 **File:**
 - resources/views/layouts/app.blade.php
