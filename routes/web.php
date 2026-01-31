@@ -44,3 +44,9 @@ Route::prefix('api-test')->group(function () {
     Route::get('/connection', [ApiTestController::class, 'testConnection'])->name('api.test.connection');
     Route::get('/endpoint', [ApiTestController::class, 'testEndpoint'])->name('api.test.endpoint');
 });
+
+// Route untuk testing aplikasi
+Route::prefix('testing')->group(function () {
+    Route::get('/', [TestingController::class, 'index'])->name('testing.dashboard');
+    Route::get('/{testName}', [TestingController::class, 'runSpecificTest'])->name('testing.run');
+});
