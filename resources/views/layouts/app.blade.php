@@ -71,26 +71,48 @@
         }
 
         /* Grid adjustments for different screen sizes */
-        .col-responsive {
+        .col-movie-card {
             flex: 0 0 auto;
             width: 100%;
         }
 
         @media (min-width: 576px) {
-            .col-responsive {
+            .col-movie-card {
                 width: 50%;
             }
         }
 
         @media (min-width: 768px) {
-            .col-responsive {
+            .col-movie-card {
                 width: 33.333333%;
             }
         }
 
         @media (min-width: 992px) {
-            .col-responsive {
+            .col-movie-card {
                 width: 25%;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .col-movie-card {
+                width: 20%;
+            }
+        }
+
+        /* Improved responsive text */
+        .text-responsive {
+            font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+
+        /* Better spacing for mobile */
+        .mobile-spacer {
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-spacer {
+                margin-bottom: 0;
             }
         }
 
