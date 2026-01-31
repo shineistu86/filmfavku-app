@@ -48,5 +48,4 @@ temp
 
 # Exclude files related to team division of labor
 GIT_SETUP.md
-CONTRIBUTING.md
 TODO.md
