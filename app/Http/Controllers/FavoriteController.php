@@ -33,11 +33,11 @@ class FavoriteController extends Controller
         $validated = $request->validate([
             'film_id' => 'required|string|unique:favorites,film_id',
             'title' => 'required|string|max:255',
-            'year' => 'nullable|integer',
-            'rating' => 'nullable|numeric|min:1|max:10',
-            'notes' => 'nullable|string',
+            'year' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'rating' => 'nullable|numeric|min:1|max:10|between:1,10',
+            'notes' => 'nullable|string|max:1000',
             'poster_url' => 'nullable|url',
-            'imdb_id' => 'nullable|string'
+            'imdb_id' => 'nullable|string|max:50'
         ]);
 
         // Simpan ke database
@@ -151,8 +151,8 @@ class FavoriteController extends Controller
     {
         // Validasi input
         $validated = $request->validate([
-            'rating' => 'nullable|numeric|min:1|max:10',
-            'notes' => 'nullable|string'
+            'rating' => 'nullable|numeric|min:1|max:10|between:1,10',
+            'notes' => 'nullable|string|max:1000'
         ]);
 
         $favorite = Favorite::findOrFail($id);
