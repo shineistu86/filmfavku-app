@@ -29,10 +29,35 @@
         <div class="col-md-12">
             <h2 class="mb-4">Film Terbaru</h2>
             <div class="row" id="latestFilms">
-                <!-- Film akan dimuat di sini melalui AJAX atau langsung dari controller -->
-                <div class="col-md-12 text-center">
-                    <p>Daftar film terbaru akan ditampilkan di sini...</p>
-                </div>
+                @if(isset($films) && !empty($films))
+                    @foreach($films['results'] as $film)
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="card h-100">
+                            <img src="{{ $film['poster'] ?? 'https://placehold.co/300x450/eee/aaa?text=No+Image' }}"
+                                 class="card-img-top"
+                                 alt="{{ $film['title'] ?? 'No Title' }}"
+                                 style="height: 300px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ Str::limit($film['title'] ?? 'Tidak ada judul', 30) }}</h5>
+                                <p class="card-text">
+                                    <small class="text-muted">{{ $film['year'] ?? 'Tahun tidak diketahui' }}</small>
+                                </p>
+                                <div class="mt-auto">
+                                    <a href="{{ route('film.show', ['id' => $film['id'] ?? 1]) }}" class="btn btn-primary btn-sm w-100">
+                                        <i class="fas fa-eye"></i> Detail
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                @else
+                    <div class="col-12">
+                        <div class="alert alert-info text-center" role="alert">
+                            <i class="fas fa-info-circle"></i> Belum ada data film terbaru yang tersedia
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

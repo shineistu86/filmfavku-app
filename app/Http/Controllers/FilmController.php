@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Services\FilmapikApiService;
 
 class FilmController extends Controller
 {
-    private $apiUrl;
+    protected $filmapikApi;
 
-    public function __construct()
+    public function __construct(FilmapikApiService $filmapikApi)
     {
-        $this->apiUrl = config('filmapik.base_url');
+        $this->filmapikApi = $filmapikApi;
     }
 
     /**
@@ -19,14 +19,13 @@ class FilmController extends Controller
      */
     public function latest()
     {
-        try {
-            $response = Http::timeout(config('filmapik.timeout'))->get($this->apiUrl . '/latest');
-            $films = $response->json();
+        $films = $this->filmapikApi->getLatestFilms();
 
-            return view('films.latest', compact('films'));
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Gagal mengambil data film: ' . $e->getMessage()]);
+        if (!$films) {
+            return redirect()->back()->withErrors(['error' => 'Gagal mengambil data film']);
         }
+
+        return view('films.latest', compact('films'));
     }
 
     /**
@@ -40,16 +39,13 @@ class FilmController extends Controller
             return redirect()->back();
         }
 
-        try {
-            $response = Http::timeout(config('filmapik.timeout'))->get($this->apiUrl . '/search', [
-                'q' => $query
-            ]);
-            $films = $response->json();
+        $films = $this->filmapikApi->searchFilms($query);
 
-            return view('films.search', compact('films', 'query'));
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Gagal mencari film: ' . $e->getMessage()]);
+        if (!$films) {
+            return redirect()->back()->withErrors(['error' => 'Gagal mencari film']);
         }
+
+        return view('films.search', compact('films', 'query'));
     }
 
     /**
@@ -57,14 +53,13 @@ class FilmController extends Controller
      */
     public function show($id)
     {
-        try {
-            $response = Http::timeout(config('filmapik.timeout'))->get($this->apiUrl . '/detail/' . $id);
-            $film = $response->json();
+        $film = $this->filmapikApi->getFilmDetail($id);
 
-            return view('films.detail', compact('film'));
-        } catch (\Exception $e) {
-            return redirect()->route('home')->withErrors(['error' => 'Gagal mengambil detail film: ' . $e->getMessage()]);
+        if (!$film) {
+            return redirect()->route('home')->withErrors(['error' => 'Gagal mengambil detail film']);
         }
+
+        return view('films.detail', compact('film'));
     }
 
     /**
@@ -78,16 +73,13 @@ class FilmController extends Controller
             return redirect()->back();
         }
 
-        try {
-            $response = Http::timeout(config('filmapik.timeout'))->get($this->apiUrl . '/country', [
-                'search' => $country
-            ]);
-            $films = $response->json();
+        $films = $this->filmapikApi->getFilmsByCountry($country);
 
-            return view('films.country', compact('films', 'country'));
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Gagal mengambil film berdasarkan negara: ' . $e->getMessage()]);
+        if (!$films) {
+            return redirect()->back()->withErrors(['error' => 'Gagal mengambil film berdasarkan negara']);
         }
+
+        return view('films.country', compact('films', 'country'));
     }
 
     /**
@@ -101,15 +93,12 @@ class FilmController extends Controller
             return redirect()->back();
         }
 
-        try {
-            $response = Http::timeout(config('filmapik.timeout'))->get($this->apiUrl . '/category', [
-                'search' => $category
-            ]);
-            $films = $response->json();
+        $films = $this->filmapikApi->getFilmsByCategory($category);
 
-            return view('films.category', compact('films', 'category'));
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Gagal mengambil film berdasarkan kategori: ' . $e->getMessage()]);
+        if (!$films) {
+            return redirect()->back()->withErrors(['error' => 'Gagal mengambil film berdasarkan kategori']);
         }
+
+        return view('films.category', compact('films', 'category'));
     }
 }

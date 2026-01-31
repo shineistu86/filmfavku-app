@@ -7,17 +7,17 @@
     <div class="row mb-4">
         <div class="col-12">
             <h1 class="display-5">Film dari {{ $country ?? 'Semua Negara' }}</h1>
-            <p class="lead">{{ count($films ?? []) }} film ditemukan</p>
+            <p class="lead">{{ count($films['results'] ?? []) }} film ditemukan</p>
         </div>
     </div>
 
     <div class="row">
-        @if(isset($films) && count($films) > 0)
-            @foreach($films as $film)
+        @if(isset($films) && !empty($films['results']))
+            @foreach($films['results'] as $film)
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="card h-100">
-                    <img src="{{ $film['poster'] ?? 'https://placehold.co/300x450/eee/aaa?text=No+Image' }}" 
-                         class="card-img-top" 
+                    <img src="{{ $film['poster'] ?? 'https://placehold.co/300x450/eee/aaa?text=No+Image' }}"
+                         class="card-img-top"
                          alt="{{ $film['title'] ?? 'No Title' }}"
                          style="height: 300px; object-fit: cover;">
                     <div class="card-body d-flex flex-column">

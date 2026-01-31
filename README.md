@@ -18,13 +18,13 @@ Project ini dibuat sebagai **media pembelajaran Laravel**, dengan gaya penulisan
 
 ## Teknologi yang Digunakan
 
-- **Backend:** Laravel 12.x (PHP Framework)
+- **Backend:** Laravel 10.x (PHP Framework)
 - **Frontend:** Bootstrap 5, JavaScript
 - **Database:** MySQL (lokal)
 - **API:** api-filmapik
 - **Build Tool:** Vite
 - **Server:** PHP Built-in Server
-- **Bahasa Pemrograman:** PHP 8.2+, JavaScript
+- **Bahasa Pemrograman:** PHP 8.1+, JavaScript
 
 ---
 
@@ -32,7 +32,7 @@ Project ini dibuat sebagai **media pembelajaran Laravel**, dengan gaya penulisan
 
 ### Prasyarat
 
-- PHP 8.2 atau lebih tinggi
+- PHP 8.1 atau lebih tinggi
 - Composer
 - Node.js dan npm
 - MySQL (Laragon / XAMPP)
@@ -147,6 +147,17 @@ GET https://api-filmapik.vercel.app/api/country?search=france
 GET https://api-filmapik.vercel.app/api/category?search=action
 ```
 
+## Integrasi API
+
+Aplikasi ini menggunakan layanan API eksternal untuk mengambil data film. Integrasi dilakukan melalui service `FilmapikApiService` yang menyediakan metode untuk:
+- Mengambil film terbaru
+- Mencari film berdasarkan judul
+- Mengambil detail film
+- Mengambil film berdasarkan negara
+- Mengambil film berdasarkan kategori
+
+Service ini diinject ke dalam controller melalui dependency injection Laravel.
+
 ## Kolaborasi & Manajemen Git
 
 ### Skema Kerja Tim
@@ -183,6 +194,7 @@ git config --local user.email "syamjoj@gmail.com"
 **File:**
 - app/Http/Controllers/HomeController.php
 - app/Http/Controllers/FilmController.php
+- app/Services/FilmapikApiService.php
 - routes/web.php
 
 **Tugas:**

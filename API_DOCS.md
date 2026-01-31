@@ -111,15 +111,48 @@ Base URL: `https://api-filmapik.vercel.app/api`
   }
   ```
 
-## Konfigurasi di Laravel
+## Integrasi API di Laravel
 
-### Environment Variable
+### Service Layer
+Aplikasi menggunakan service layer untuk mengelola integrasi API eksternal. Service ini terletak di `app/Services/FilmapikApiService.php`.
+
+### Dependency Injection
+Service diinject ke dalam controller melalui constructor:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Services\FilmapikApiService;
+
+class FilmController extends Controller
+{
+    protected $filmapikApi;
+
+    public function __construct(FilmapikApiService $filmapikApi)
+    {
+        $this->filmapikApi = $filmapikApi;
+    }
+}
+```
+
+### Method yang Tersedia di Service
+- `getLatestFilms()` - Mengambil daftar film terbaru
+- `searchFilms($query)` - Mencari film berdasarkan judul
+- `getFilmDetail($id)` - Mengambil detail film berdasarkan ID
+- `getFilmsByCountry($country)` - Mengambil film berdasarkan negara
+- `getFilmsByCategory($category)` - Mengambil film berdasarkan kategori
+
+### Konfigurasi di Laravel
+
+#### Environment Variable
 ```env
 FILMAPIK_API_URL=https://api-filmapik.vercel.app/api
 FILMAPIK_TIMEOUT=30
 ```
 
-### Konfigurasi File
+#### Konfigurasi File
 File: `config/filmapik.php`
 ```php
 <?php
@@ -131,11 +164,21 @@ return [
 ];
 ```
 
-### Penggunaan di Controller
+### Error Handling
+
+Service menangani error dengan:
+- Logging error ke file log Laravel
+- Mengembalikan nilai null jika permintaan gagal
+- Menyediakan pesan error yang dapat ditampilkan ke pengguna
+
+Contoh penanganan error di controller:
 ```php
-$response = Http::timeout(config('filmapik.timeout'))->get(config('filmapik.base_url') . '/latest');
+$films = $this->filmapikApi->getLatestFilms();
+
+if (!$films) {
+    return redirect()->back()->withErrors(['error' => 'Gagal mengambil data film']);
+}
 ```
 
-## Error Handling
-
-Jika API eksternal tidak merespons dalam waktu yang ditentukan (timeout), aplikasi akan menampilkan pesan error kepada pengguna dan mencatat error tersebut untuk debugging.
+### Logging
+Semua permintaan ke API dicatat dalam log untuk keperluan debugging dan monitoring.

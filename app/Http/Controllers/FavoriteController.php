@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Favorite;
 
 class FavoriteController extends Controller
 {
@@ -11,8 +12,8 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        // Di sini nanti akan ditampilkan daftar film favorit dari database
-        return view('favorites.index');
+        $favorites = Favorite::orderBy('created_at', 'desc')->get();
+        return view('favorites.index', compact('favorites'));
     }
 
     /**
@@ -22,15 +23,16 @@ class FavoriteController extends Controller
     {
         // Validasi input
         $validated = $request->validate([
-            'film_id' => 'required|string',
+            'film_id' => 'required|string|unique:favorites,film_id',
             'title' => 'required|string|max:255',
             'year' => 'nullable|integer',
             'rating' => 'nullable|numeric|min:1|max:10',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
+            'poster_url' => 'nullable|url'
         ]);
 
-        // Di sini nanti akan disimpan ke database
-        // $favorite = Favorite::create($validated);
+        // Simpan ke database
+        $favorite = Favorite::create($validated);
 
         return redirect()->route('favorites.index')->with('success', 'Film berhasil ditambahkan ke favorit');
     }
@@ -40,9 +42,8 @@ class FavoriteController extends Controller
      */
     public function destroy($id)
     {
-        // Di sini nanti akan menghapus dari database
-        // $favorite = Favorite::findOrFail($id);
-        // $favorite->delete();
+        $favorite = Favorite::findOrFail($id);
+        $favorite->delete();
 
         return redirect()->route('favorites.index')->with('success', 'Film berhasil dihapus dari favorit');
     }
@@ -58,9 +59,8 @@ class FavoriteController extends Controller
             'notes' => 'nullable|string'
         ]);
 
-        // Di sini nanti akan memperbarui data di database
-        // $favorite = Favorite::findOrFail($id);
-        // $favorite->update($validated);
+        $favorite = Favorite::findOrFail($id);
+        $favorite->update($validated);
 
         return redirect()->route('favorites.index')->with('success', 'Data favorit berhasil diperbarui');
     }
@@ -70,9 +70,7 @@ class FavoriteController extends Controller
      */
     public function edit($id)
     {
-        // Di sini nanti akan mengambil data dari database
-        // $favorite = Favorite::findOrFail($id);
-
-        return view('favorites.edit');
+        $favorite = Favorite::findOrFail($id);
+        return view('favorites.edit', compact('favorite'));
     }
 }
