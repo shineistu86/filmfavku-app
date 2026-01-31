@@ -33,6 +33,7 @@ Route::prefix('film')->group(function () {
 Route::prefix('favorites')->group(function () {
     Route::get('/', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/', [FavoriteController::class, 'store'])->name('favorites.store');
+    Route::post('/api', [FavoriteController::class, 'storeFromApi'])->name('favorites.store.from.api');
     Route::delete('/{id}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
     Route::put('/{id}', [FavoriteController::class, 'update'])->name('favorites.update');
     Route::get('/{id}/edit', [FavoriteController::class, 'edit'])->name('favorites.edit');
