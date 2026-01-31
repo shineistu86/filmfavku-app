@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ApiTestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +36,10 @@ Route::prefix('favorites')->group(function () {
     Route::delete('/{id}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
     Route::put('/{id}', [FavoriteController::class, 'update'])->name('favorites.update');
     Route::get('/{id}/edit', [FavoriteController::class, 'edit'])->name('favorites.edit');
+});
+
+// Route untuk testing API
+Route::prefix('api-test')->group(function () {
+    Route::get('/connection', [ApiTestController::class, 'testConnection'])->name('api.test.connection');
+    Route::get('/endpoint', [ApiTestController::class, 'testEndpoint'])->name('api.test.endpoint');
 });
